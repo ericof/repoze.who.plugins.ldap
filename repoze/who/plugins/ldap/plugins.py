@@ -75,6 +75,8 @@ class LDAPBaseAuthenticatorPlugin(object):
         """
         if base_dn is None:
             raise ValueError('A base Distinguished Name must be specified')
+            
+        self.ldap_con_string = ldap_connection
         self.ldap_connection = make_ldap_connection(ldap_connection)
 
         if start_tls:
@@ -140,7 +142,23 @@ class LDAPBaseAuthenticatorPlugin(object):
             else:
                 identity['userdata'] = userdata + '<dn:%s>' % b64encode(dn)
                 return identity['login']
-        except ldap.LDAPError:
+        except ldap.LDAPError, e:
+            logger = environ['repoze.who.logger']
+            if isinstance(e, ldap.INVALID_CREDENTIALS):
+                log_func = logger.warn
+                ldap_down = False
+            else:
+                log_func = logger.error
+                ldap_down = isinstance(e, ldap.SERVER_DOWN)
+                    
+            # when ldap is down lets log before attempting to re-establish connection         
+            log_func(str(e))
+            
+            if ldap_down:
+                self.ldap_connection = None
+                self.ldap_connection = make_ldap_connection(self.ldap_con_string)
+                logger.info('Restarting ldap connection to %s'%(self.ldap_con_string))
+                            
             return None
 
     def __repr__(self):
