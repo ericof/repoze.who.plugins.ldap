@@ -226,7 +226,7 @@ class LDAPAuthenticatorPlugin(LDAPBaseAuthenticatorPlugin):
 
         if self.bind_dn:
             try:
-                self.ldap_connection.bind_s(self.bind_dn, self.bind_password)
+                self.ldap_connection.bind_s(self.bind_dn, self.bind_pass)
             except ldap.LDAPError:
                 raise ValueError("Couldn't bind with supplied credentials")
         try:
