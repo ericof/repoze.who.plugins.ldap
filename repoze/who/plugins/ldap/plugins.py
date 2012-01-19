@@ -315,10 +315,9 @@ class LDAPSearchAuthenticatorPlugin(LDAPBaseAuthenticatorPlugin):
         @raise ValueError: If the C{login} key is not in the I{identity} dict.
         
         """
-
         if self.bind_dn:
             try:
-                self.ldap_connection.bind_s(self.bind_dn, self.bind_password)
+                self.ldap_connection.bind_s(self.bind_dn, self.bind_pass)
             except ldap.LDAPError:
                 raise ValueError("Couldn't bind with supplied credentials")
         try:
@@ -329,7 +328,6 @@ class LDAPSearchAuthenticatorPlugin(LDAPBaseAuthenticatorPlugin):
                 self.search_scope,
                 srch,
                 )
-            
             if len(dn_list) == 1:
                 return dn_list[0][0]
             elif len(dn_list) > 1:
