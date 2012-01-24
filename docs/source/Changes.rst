@@ -2,6 +2,12 @@ repoze.who.plugins.ldap Changelog
 =================================
 
 
+2.0a3 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0a2 (2012-01-24)
 ------------------
 
