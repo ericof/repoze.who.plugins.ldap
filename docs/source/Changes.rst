@@ -2,8 +2,8 @@ repoze.who.plugins.ldap Changelog
 =================================
 
 
-2.0a2 (unreleased)
--------------------
+2.0a2 (2012-01-24)
+------------------
 
 *  repoze.who > 2.0dev [ericof]
 
